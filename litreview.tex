@@ -179,20 +179,31 @@ It is shown that resonance-line radiation transfer in low-density, optically-thi
 
 \subsection{Methods}
 %% What is the method used to address the science question?
-The condition for this analytic solution is that the optical depth is so large, the transfer problem is dominated by the redistribution of radiation in the damping wings of the line.
-
+The condition for this analytic solution is that the optical depth is so large, the transfer problem is dominated by the redistribution of radiation in the damping wings of the line. Modeling redistribution as a diffusion in frequency space naturally leads to a partial differential equation which turns out to be the Poisson equation. The resulting analytic solution is valid in the limit of large optical depth and matches well to numerical results.
 
 %\subsection{Citeable Results}
 %%% A list of citeable results in the paper
 %\begin{itemize}
 %    \item
 %\end{itemize}
-%\subsection{Derivations}
+\subsection{Derivations}
 %%% Derivations of any critical equations that appear in the paper
 
-\subsection{Discussion and Concerns}
+To obtain the second order differential equation that is solved in this paper, the integral in Eq. 1 must be evaluated using the redistribution function and expansion of $J(x')$ in a Taylor series about $x$. 
+
+The general redistribution function, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded to its leading terms. The first term can safely be neglected in the line wings, so the redistribution function evaluates to 
+
+\begin{equation}
+    q(x, x') = \frac{x^2}{s^2}i\  \mathrm{erfc}(|r|) \approx \left(1+2\frac{r}{x}\right)i\ \mathrm{erfc(|r|)}
+\end{equation}
+
+with $r=(x-x')/2$ and $s=(x+x')/2$, using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the fact that as long as $|x-x'|\ll 1$, $s \approx x$.
+
+
+
+
+%\subsection{Discussion and Concerns}
 %% Are there any red flags?
-It is stated that the mean number of scatterings is directly proportional to the optical depth, but in other literature the mean number of scatterings is proportional to the optical depth squared.
 
 %\subsection{Personal Relevance}
 %%% Place the work into a familiar context. How is the discussion in the paper related to your own research interests and experience?
@@ -222,8 +233,10 @@ It is stated that the mean number of scatterings is directly proportional to the
 
 This paper derives the redistribution in frequency of radiation scattered from moving atoms, examining how different circumstances affect the types of scattering which occur in the atom's rest frame. 
 
-%\subsection{Methods}
+\subsection{Methods}
 %%% What is the method used to address the science question?
+
+The redistribution function is derived by boosting to the atom's rest frame, where the photon frequency $\nu$ becomes $\xi = \nu - \nu_0 \mathbf{n}\cdot \mathbf{v}/c$. Then, the probability of a photon $(\xi, \mathbf{n})$ being absorbed and re-emitted as a photon $(\xi', \mathbf{n}')$ is calculated using the absorption probability $f(\xi)$ and phase function $g(\mathbf{n}, \mathbf{n}')$ along with the redistribution function $p(\xi, \xi')$ in the atom's rest frame. Then, to obtain $R_v(\nu, \mathbf{n}; \nu', \mathbf{n}')$, we boost back into the lab frame.
 
 %\subsection{Citeable Results}
 %%% A list of citeable results in the paper
