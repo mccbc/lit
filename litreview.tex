@@ -193,10 +193,16 @@ The condition for this analytic solution is that the optical depth is so large, 
     \frac{1}{3\phi^2(x)}\frac{d^2J(\tau, x)}{d\tau^2} = J(\tau, x) - (1-\epsilon)\int_{-\infty}^{\infty}J(\tau, x')q(x, x')dx' - \frac{G(\tau)}{4\pi}
 \end{equation}
 
-The general redistribution function, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded to its leading terms. The first term in the expansion can safely be neglected in the line wings, so the redistribution function evaluates to 
+The general redistribution function, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded according to \cite{1971JQSRT..11.1365A}. Notably, they define the integrated complementary error function as 
 
 \begin{equation}
-    q(x, x') = \frac{x^2}{s^2}i\  \mathrm{erfc}(|r|) \approx \left(1+2\frac{r}{x}\right)i\ \mathrm{erfc(|r|)}
+    \mathrm{ierfc}(z) \equiv \int_z^{\infty} \mathrm{erfc}(t) dt = \frac{1}{\sqrt{\pi}} e^{-z^2} - z\  \mathrm{erfc}(z)
+\end{equation}
+
+The first term in the expansion given by can apparently be neglected in the line wings, so the redistribution function evaluates to 
+
+\begin{equation}
+    q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+2\frac{r}{x}\right)\mathrm{ierfc(|r|)}
 \end{equation}
 
 with $r=(x-x')/2$ and $s=(x+x')/2$, and using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the fact that as long as $|x-x'|\ll 1$, $s \approx x$. Note that $1 + 2r/x = 2 - x'/x$.
@@ -224,11 +230,17 @@ All $\mathrm{erfc}(|r|)$ terms integrate to $2/\sqrt{\pi}$, while $r\ \mathrm{er
 \begin{equation}
     \begin{split}
        -2i\int_{-\infty}^{\infty}&\ \left[J(x)\ \mathrm{erfc}\left(|r|\right) + \left(\frac{2J(x)}{x} - 2\frac{dJ(x)}{dx}\right) r\ \mathrm{erfc}\left(|r|\right) + \left(-\frac{4}{x}\frac{dJ(x)}{dx} + 2\frac{d^2 J(x)}{dx^2}\right)r^2\ \mathrm{erfc}\left(|r|\right) + ...\right]dr \\
-       &= -2i \left[\frac{2}{\sqrt{\pi}} J(x) + \frac{2}{3\sqrt{\pi}}\left(-\frac{4}{x}\frac{dJ(x)}{dx} + 2\frac{d^2 J(x)}{dx^2}\right)\right]
+       &= -2i \left[\frac{2}{\sqrt{\pi}} J(x) + \frac{2}{3\sqrt{\pi}}\left(-\frac{4}{x}\frac{dJ(x)}{dx} + 2\frac{d^2 J(x)}{dx^2}\right)\right] \\
+      &= \frac{-4i}{\sqrt{\pi}} \left[J(x) + \frac{4}{3}\left(-\frac{1}{x}\frac{dJ(x)}{dx} + \frac{1}{2}\frac{d^2 J(x)}{dx^2}\right)\right] \\
    \end{split}
 \end{equation}
-%\subsection{Discussion and Concerns}
+
+This result is problematic, since there should be no reason for it to be imaginary. The issue is with Harrington's introduction of $q(x, x')$ as an imaginary number. This, along with the complementary error function, creates additional factors of $1/\sqrt{\pi}$ and returns an imaginary result.
+
+\subsection{Discussion and Concerns}
 %% Are there any red flags?
+
+The redistribution function should never be imaginary, yet in the early steps of Harrington's derivation, an integral over an imaginary function to obtain the second order differential equation inexplicably yields a well-behaved, real expansion of $J(x)$ that fits neatly into the equation.
 
 %\subsection{Personal Relevance}
 %%% Place the work into a familiar context. How is the discussion in the paper related to your own research interests and experience?
