@@ -218,7 +218,7 @@ Division by the line profile, approximated as $\phi(x) \approx a/(\pi x^2)$, yie
     q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)
 \end{equation}
 
-using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation seems to come from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$. However, if this approximation was used in the original expression, the coefficient of the integrated error function would simply be 1.
+using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation seems to come from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$. However, if this approximation was used in the original expression $x^2/s^2$, the coefficient of the integrated error function would simply be 1.
 
 The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a Taylor series about $x$.
 
@@ -255,17 +255,15 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
     - 2r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{d^2J(x)}{dx^2} \\
     &\hspace{1.5cm}+ \frac{4}{x}r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{dJ(x)}{dx}
     dr\\ \\
-    & = 2\left[J(x) + \frac{d^2J(x)}{dx^2} - \frac{2}{x}  \frac{dJ(x)}{dx} -\frac{1}{2}J(x) - \frac{3}{4} \frac{d^2J(x)}{dx^2} + \frac{3}{2x}\frac{dJ(x)}{dx}\right]\\
-    & = J(x) - \frac{1}{x}\frac{dJ(x)}{dx} + \frac{1}{2}\frac{d^2J(x)}{dx^2}
+    & = -2\left[J(x) + \frac{d^2J(x)}{dx^2} - \frac{2}{x}  \frac{dJ(x)}{dx} -\frac{1}{2}J(x) - \frac{3}{4} \frac{d^2J(x)}{dx^2} + \frac{3}{2x}\frac{dJ(x)}{dx}\right]\\
+    & = -J(x) + \frac{1}{x}\frac{dJ(x)}{dx} - \frac{1}{2}\frac{d^2J(x)}{dx^2}
    \end{split}
 \end{equation}
 
-This result is problematic, since there should be no reason for it to be imaginary. The issue is with Harrington's introduction of $q(x, x')$ as an imaginary number. This, along with the complementary error function, creates additional factors of $1/\sqrt{\pi}$ and returns an imaginary result.
+This differs from Harrington's expression for the integral by a minus sign.
 
 \subsection{Discussion and Concerns}
 %% Are there any red flags?
-
-The redistribution function should never be imaginary, yet in the early steps of Harrington's derivation, an integral over an imaginary function to obtain the second order differential equation inexplicably yields a well-behaved, real expansion of $J(x)$ that fits neatly into the equation.
 
 %\subsection{Personal Relevance}
 %%% Place the work into a familiar context. How is the discussion in the paper related to your own research interests and experience?
