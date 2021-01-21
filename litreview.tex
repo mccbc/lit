@@ -199,13 +199,26 @@ The general redistribution function, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is e
     \mathrm{ierfc}(z) \equiv \int_z^{\infty} \mathrm{erfc}(t) dt = \frac{1}{\sqrt{\pi}} e^{-z^2} - z\  \mathrm{erfc}(z)
 \end{equation}
 
-The first term in the expansion given by can apparently be neglected in the line wings, so the redistribution function evaluates to 
+which Harrington incorrectly writes down as ``$i\ \mathrm{erfc(...)}$''. The first terms in the expansion are 
+
 
 \begin{equation}
-    q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+2\frac{r}{x}\right)\mathrm{ierfc(|r|)}
+    R_{II-A}(x, x') \approx \frac{1}{2}\mathrm{erfc}(|r|+|s|) + \left(1 - \frac{a^2}{s^2} + \frac{a^4}{s^4}\right) \frac{a}{\pi s^2} \mathrm{ierfc}(|r|) + ...
 \end{equation}
 
-with $r=(x-x')/2$ and $s=(x+x')/2$, and using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the fact that as long as $|x-x'|\ll 1$, $s \approx x$. Note that $1 + 2r/x = 2 - x'/x$.
+with $r=(x-x')/2$ and $s=(x+x')/2$. The first term is ignored in the line wings (TODO: why?), and the remaining leading term of order $1/s^2$ is simply
+
+\begin{equation}
+    R_{II-A}(x, x') \approx \frac{a}{\pi s^2}\mathrm{ierfc}(|r|)
+\end{equation}
+
+Division by the line profile, approximated as $\phi(x) \approx a/(\pi x^2)$, yields
+
+\begin{equation}
+    q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)
+\end{equation}
+
+using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation seems to come from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$. However, if this approximation was used in the original expression, the coefficient of the integrated error function would simply be 1.
 
 The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a Taylor series about $x$.
 
@@ -213,25 +226,37 @@ The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a 
     J(x') \approx J(x) + \frac{dJ(x)}{dx}(x' - x) + \frac{1}{2}\frac{d^2J(x)}{dx^2}(x'-x)^2 + ...
 \end{equation}
 
-Thus, the integral becomes
+Changing variables to $r$, the integral becomes
 
 \begin{equation}
-    \int_{-\infty}^{\infty}i\ \mathrm{erfc}\left(\frac{|x-x'|}{2}\right)\left(2-\frac{x'}{x}\right)\left[J(x) + \frac{dJ(x)}{dx}(x' - x) + \frac{1}{2}\frac{d^2J(x)}{dx^2}(x'-x)^2 + ...\right] dx'
+    -2 \int_{-\infty}^{\infty} \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)\left[J(x) - 2\frac{dJ(x)}{dx}r + 2\frac{d^2J(x)}{dx^2}r^2 + ...\right] dr
 \end{equation}
 
-Changing variables to $r$, we have
+The various combinations of terms evaluate as the following:
 
-\begin{equation}
-    \int_{-\infty}^{\infty}-2i\ \mathrm{erfc}\left(|r|\right)\left(1+2\frac{r}{x}\right)\left[J(x) - 2\frac{dJ(x)}{dx}r + 2\frac{d^2J(x)}{dx^2}r^2 + ...\right] dr
-\end{equation}
+\begin{itemize}
+    \item $\int_{-\infty}^{\infty} e^{-r^2} dr = \sqrt{\pi}$
+    \item $\int_{-\infty}^{\infty} r^{n} e^{-r^2} dr = 0$ for all odd powers $n$
+    \item $\int_{-\infty}^{\infty} r^2 e^{-r^2} dr = \sqrt{\pi}/2$
+    \item $\int_{-\infty}^{\infty} |r|\ \mathrm{erfc}(|r|)\ dr = 1/2$
+    \item $\int_{-\infty}^{\infty} r^n |r|\ \mathrm{erfc}(|r|)\ dr = 0$ for all odd powers $n$
+    \item $\int_{-\infty}^{\infty} r^2 |r|\ \mathrm{erfc}(|r|)\ dr = 3/8$
+\end{itemize}
 
-All $\mathrm{erfc}(|r|)$ terms integrate to $2/\sqrt{\pi}$, while $r\ \mathrm{erfc}(|r|)$ terms (and all others which are odd functions in $r$) evaluate to zero. The $r^2\ \mathrm{erfc}(|r|)$ terms evaluate to $2/(3\sqrt{\pi})$. Therefore, upon evaluating the integral, we are left with
+Therefore, collecting nonzero terms and evaluating the integral, we are left with
 
 \begin{equation}
     \begin{split}
-       -2i\int_{-\infty}^{\infty}&\ \left[J(x)\ \mathrm{erfc}\left(|r|\right) + \left(\frac{2J(x)}{x} - 2\frac{dJ(x)}{dx}\right) r\ \mathrm{erfc}\left(|r|\right) + \left(-\frac{4}{x}\frac{dJ(x)}{dx} + 2\frac{d^2 J(x)}{dx^2}\right)r^2\ \mathrm{erfc}\left(|r|\right) + ...\right]dr \\
-       &= -2i \left[\frac{2}{\sqrt{\pi}} J(x) + \frac{2}{3\sqrt{\pi}}\left(-\frac{4}{x}\frac{dJ(x)}{dx} + 2\frac{d^2 J(x)}{dx^2}\right)\right] \\
-      &= \frac{-4i}{\sqrt{\pi}} \left[J(x) + \frac{4}{3}\left(-\frac{1}{x}\frac{dJ(x)}{dx} + \frac{1}{2}\frac{d^2 J(x)}{dx^2}\right)\right] \\
+    \int_{-\infty}^{\infty}J(x')q(x, x') &= -2 \int_{-\infty}^{\infty}
+    \frac{1}{\sqrt{\pi}}e^{-r^2}J(x) 
+    + \frac{2}{\sqrt{\pi}}r^2e^{-r^2} \frac{d^2J(x)}{dx^2}
+    - \frac{4}{x\sqrt{\pi}}r^2e^{-r^2} \frac{dJ(x)}{dx}\\
+    &\hspace{1.5cm}- |r|\ \mathrm{erfc}(|r|)\ J(x)
+    - 2r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{d^2J(x)}{dx^2} \\
+    &\hspace{1.5cm}+ \frac{4}{x}r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{dJ(x)}{dx}
+    dr\\ \\
+    & = 2\left[J(x) + \frac{d^2J(x)}{dx^2} - \frac{2}{x}  \frac{dJ(x)}{dx} -\frac{1}{2}J(x) - \frac{3}{4} \frac{d^2J(x)}{dx^2} + \frac{3}{2x}\frac{dJ(x)}{dx}\right]\\
+    & = J(x) - \frac{1}{x}\frac{dJ(x)}{dx} + \frac{1}{2}\frac{d^2J(x)}{dx^2}
    \end{split}
 \end{equation}
 
