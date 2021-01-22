@@ -58,16 +58,27 @@ This makes intuitive sense; the mean intensity is the average of the ingoing and
 
 \begin{equation}
     \begin{split}
-        F(\mu) = 4\pi H(\mu) &= \int d\Omega\ \mu\ I(\tau, \mu)\\
-        &= \int_0^{2\pi} d\phi \int_0^1 d\mu\ \mu\ I(\tau, \mu)\\
-        &= 2\pi \int_{-1}^1 d\mu\ \mu\ I(\tau, \mu)\\
-        &= 2\pi \int_{-1}^1 d\mu\ \mu\ \left[I_+ \delta(\mu - 1/\sqrt{3}) + I_- \delta(\mu + 1/\sqrt{3})\right]\\
+        H(\mu) &= \frac{1}{4\pi}\int d\Omega\ \mu\ I(\tau, \mu)\\
+        &= \frac{1}{4\pi}\int_0^{2\pi} d\phi \int_0^1 d\mu\ \mu\ I(\tau, \mu)\\
+        &= \frac{1}{2} \int_{-1}^1 d\mu\ \mu\ I(\tau, \mu)\\
+        &= \frac{1}{2} \int_{-1}^1 d\mu\ \left[\mu I_+ \delta(\mu - 1/\sqrt{3}) + \mu I_- \delta(\mu + 1/\sqrt{3})\right]\\
+        &= \frac{1}{2} \left( \frac{I_+}{\sqrt{3}} - \frac{I_-}{\sqrt{3}}\right) \\
+        &= \frac{I_+ - I_-}{2\sqrt{3}}
     \end{split}
 \end{equation}
 
-\subsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
+Combining the flux, $H$, and mean intensity, $J$, we arrive at the following relations.
 
-In this section, the derivation of the flux at the surface of a uniform sphere is tested against the boundary condition implied by the two-stream approximation.
+\begin{equation}
+    \begin{split}
+        &I_+ = J + \sqrt{3}H \\
+        &I_- = J - \sqrt{3}H
+    \end{split}
+\end{equation}
+
+To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the next section, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity.
+
+\subsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
 
 $x$, the distance from the source in Doppler widths, is related to the frequency variable $\sigma$ by 
 
