@@ -229,8 +229,10 @@ The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a 
 Changing variables to $r$, the integral becomes
 
 \begin{equation}
-    -2 \int_{-\infty}^{\infty} \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)\left[J(x) - 2\frac{dJ(x)}{dx}r + 2\frac{d^2J(x)}{dx^2}r^2 + ...\right] dr
+    2 \int_{-\infty}^{\infty} \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)\left[J(x) - 2\frac{dJ(x)}{dx}r + 2\frac{d^2J(x)}{dx^2}r^2 + ...\right] dr
 \end{equation}
+
+where the minus sign introduced by the change of variables has been used to flip the bounds of integration, which would nominally go from $\infty$ to $-\infty$ under the variable $r$.
 
 The various combinations of terms evaluate as the following:
 
@@ -247,7 +249,7 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
 
 \begin{equation}
     \begin{split}
-    \int_{-\infty}^{\infty}J(x')q(x, x') &= -2 \int_{-\infty}^{\infty}
+    \int_{-\infty}^{\infty}J(x')q(x, x') &= 2 \int_{-\infty}^{\infty}
     \frac{1}{\sqrt{\pi}}e^{-r^2}J(x) 
     + \frac{2}{\sqrt{\pi}}r^2e^{-r^2} \frac{d^2J(x)}{dx^2}
     - \frac{4}{x\sqrt{\pi}}r^2e^{-r^2} \frac{dJ(x)}{dx}\\
@@ -255,12 +257,10 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
     - 2r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{d^2J(x)}{dx^2} \\
     &\hspace{1.5cm}+ \frac{4}{x}r^2\ |r|\ \mathrm{erfc}(|r|)\ \frac{dJ(x)}{dx}
     dr\\ \\
-    & = -2\left[J(x) + \frac{d^2J(x)}{dx^2} - \frac{2}{x}  \frac{dJ(x)}{dx} -\frac{1}{2}J(x) - \frac{3}{4} \frac{d^2J(x)}{dx^2} + \frac{3}{2x}\frac{dJ(x)}{dx}\right]\\
-    & = -J(x) + \frac{1}{x}\frac{dJ(x)}{dx} - \frac{1}{2}\frac{d^2J(x)}{dx^2}
+    & = 2\left[J(x) + \frac{d^2J(x)}{dx^2} - \frac{2}{x}  \frac{dJ(x)}{dx} -\frac{1}{2}J(x) - \frac{3}{4} \frac{d^2J(x)}{dx^2} + \frac{3}{2x}\frac{dJ(x)}{dx}\right]\\
+    & = J(x) - \frac{1}{x}\frac{dJ(x)}{dx} + \frac{1}{2}\frac{d^2J(x)}{dx^2}
    \end{split}
 \end{equation}
-
-This differs from Harrington's expression for the integral by a minus sign.
 
 \subsection{Discussion and Concerns}
 %% Are there any red flags?
