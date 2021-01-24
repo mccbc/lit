@@ -12,7 +12,6 @@
   breakatwhitespace=true,
   tabsize=4
 }
-
 \usepackage[T1]{fontenc}
 \newcommand{\vdag}{(v)^\dagger}
 \newcommand\aastex{AAS\TeX}
@@ -164,7 +163,14 @@ As a first step, I wrote a Monte Carlo radiative transfer code in \texttt{FORTRA
 
 Developing this solver was a key step in that it allowed for direct comparison between the analytic solutions and the Monte Carlo radiation transfer results. However, upon further analysis, it was found that our initial approach to finding numerical solutions was somewhat flawed. The problem is much better suited to an expansion using Laplace transforms, rather than Fourier transforms. With this approach, an imaginary frequency variable $s = i\omega$ is swept through to find resonant responses from the equation. When a resonance is detected, a refinement algorithm hones in on the peak and returns an eigenfrequency. A sum of eigenfunctions corresponding to these eigenfrequencies will return a solution for the mean intensity, which can be used to find the flux and consequently the wait time distribution for photons escaping the sphere.
 
-The code that makes up the new analytic solver takes input parameters that determine the number of desired spatial and frequency eigenmodes. To determine where (and how) the result converges, I will increase the number of eigenmodes and characterize how the resulting wait time distributions are affected. Once the outputs have converged satisfactorily, I will have confirmed that the solver accurately represents the true analytic solution. To use the escape time distribution as a Monte Carlo accelerant, it must show a correctly-shaped rise and exponential falloff. I will isolate groups of photons from the Monte Carlo based on their escape frequencies, and compare the escape time distributions of these sub-populations against the analytic result.
+The code that makes up the new analytic solver takes input parameters that determine the number of desired spatial and frequency eigenmodes. To determine where (and how) the result converges, I will increase the number of eigenmodes and characterize how the resulting wait time distributions are affected. Once the outputs have converged satisfactorily, I will have confirmed that the solver accurately represents the true analytic solution. To use the escape time distribution as a Monte Carlo accelerant, it must show a correctly-shaped rise and exponential falloff. I have isolated groups of photons from the Monte Carlo based on their escape frequencies as shown in Fig. \ref{mc_freqs}, and next I will compare the escape time distributions of these sub-populations against the analytic result.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{t-escape_frequency-study.pdf}
+    \caption{Two frequency sub-populations identified in the Monte Carlo data with slightly different escape time distributions.}
+    \label{mc_freqs}
+\end{figure}
 
  These aims will quantify how well our analytic approach matches the equivalent numerical techniques, and their successful completion will form the basis for chapter 1 of my PhD thesis as a part of a broader effort to explore advanced numerical techniques in radiative transfer astrophysics. In follow-up work to be completed after my Master's defense, I will turn the results of this study into an acceleration scheme that will enable high-performance radiation hydrodynamics simulations of irradiated exoplanets. I anticipate that the method developed here may also be used in other contexts where Ly$\alpha$ transport is important, including emission from galaxies in the early universe.
 
@@ -172,47 +178,58 @@ The code that makes up the new analytic solver takes input parameters that deter
 
 Analytic groundwork was done to validate (or call into question) assumptions made in the theory papers preceding our work. In this section, these derivations are presented alongside numerical results to provide context and to illustrate the motivation for our more sophisticated analytic solution to this resonant scattering problem.
 
-\subsection{Analytic Solutions Compared with Monte Carlo}
+\subsubsection{Dimensional Scaling of the Time-Dependent Diffusion Equation}
 
-\begin{figure}
-    \centering
-    \includegraphics{pdf_xinit0.0.pdf}
-    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 0.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
-    \label{fig:sol_mc_residual_0}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{pdf_xinit6.0.pdf}
-    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 6.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
-    \label{fig:sol_mc_residual_6}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{pdf_xinit12.0.pdf}
-    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 12.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
-    \label{fig:sol_mc_residual_12}
-\end{figure}
-
-One desired outcome of our work is to confirm that the analytic solution we present accurately characterizes the spectrum for the case where the monochromatic source of photons are not initialized with line-center frequencies. For each Monte Carlo dataset, the photons were initialized with a different starting frequency to evaluate the analytic solutions' accuracy with variation of the parameter $\rm \sigma_s$. This is related to the code parameter $\rm x_{init}$ by 
-\begin{equation} \label{sigma0_xinit}
-    \sigma_0 = \frac{\beta}{a} \rm x_{init}^3
+The differential equation for time-dependent diffusion through the sphere is 
+\begin{equation}
+    -3 \frac{k\phi}{c} \frac{\partial J}{\partial t} + \nabla^2 J + \left( \frac{k}{\Delta} \right)^2 \frac{\partial^2 J}{\partial \sigma^2} = - \frac{\sqrt{6} kE}{4\pi \Delta^2} \delta(\vec{x}) \delta (\sigma - \sigma_s ) \delta (t)
+        \label{timedependent}
 \end{equation}
 
-where $\beta = \sqrt{2 \pi ^2 / 27}$. Monte Carlo numerical simulations were performed with $\rm x_{init} = (0.0, 2.0, 4.0 ... 12.0)$ and optical depths $\tau_0 = (10^6, 10^7)$. In Fig. \ref{fig:sol_mc_residual_0}, \ref{fig:sol_mc_residual_6} and \ref{fig:sol_mc_residual_12}, these are compared with the analytic solutions at selected initial frequencies. In each of these figures, the contribution of the flux from our additive boundary condition correction, $H_{bc}$, is examined alongside the solutions $H_{\rm d}$ and $H_{\rm 0}$. The corrected solution, $H_{\rm 0 + bc} = H_{\rm 0} + H_{\rm bc}$, has considerably lower residuals to Monte Carlo than the other solutions, especially in the line wing. It is evident that the solution $H_{\rm d}$ derived by \citet{harrington1973} diverges significantly from the Monte Carlo simulations in the line wings. The $H_{\rm bc}$ correction term, when added to the solution $H_0$ derived by \citet{2006ApJ...649...14D}, produces a successful analytical result that characterizes the probability distribution of frequencies for escaping photons, including situations in which the photons are given initial frequencies outside of the line core.
+By replacing the differential operators with characteristic quantities and equating pairs of terms on the left-hand side of this equation, certain dimensionless scaling relations emerge. 
 
-This can best be seen by comparing the results shown in Fig. \ref{fig:sol_mc_residual_0} with those in Fig. \ref{fig:sol_mc_residual_12}. The $\rm H_{0+bc}$ analytic solution remains accurate in the line wing when photons are emitted away from line center, while the residuals of $\rm H_d$ and $\rm H_0$ become noticeably larger. It can be concluded that the $\rm H_{bc}$ correction term more accurately represents the additional flux from photons that escape without ever being scattered through the line core.
+To find how the time-independent terms scale, I equate the second and third terms.
 
-\subsubsection{Two-Stream Approximation Boundary Condition}
+\begin{equation}
+\begin{split}
+    \frac{J}{R^2} &= \left(\frac{k}{\Delta}\right)^2 \frac{J}{\sigma_0^2}\\
+    \sigma_0 &= \frac{kR}{\Delta}\\
+    \frac{\sqrt{2\pi/27}}{a}x_0^3 &= kR \left(\frac{\sqrt{\pi}\tau_0}{kR}\right)\\
+    x_0 &= \sqrt{\frac{27}{2}}\left(a\tau_0\right)^{1/3}
+    \end{split}
+\end{equation}
 
-In the two-stream approximation for radiative transfer, it is assumed that the intensity is nearly isotropic---that is, it can be broken up into two components, $I_+(\tau)$ and $I_-(\tau)$. These will be referred to as the ``up'' and ``down'' intensities, respectively, and written shorthand as $I_+$ and $I_-$. The intensity is a function of the optical depth $\tau$ and angle $\mu = \cos{\theta}$, and is expressed in up and down components as
+Thus, the theory predicts that the characteristic frequency in Doppler widths should scale as the cube root of the Voigt parameter $a$ multiplied by the line center optical depth $\tau_0$. I have tested our eigenmode solution against this scaling by computing an escape time distribution for $\tau_0 = 10^5, 10^6, 10^7$, and $10^8$. I use two different values as a ``characteristic frequency'' $x_0$. One is the inverse of the lowest-order imaginary eigenfrequency, which determines the late-time exponential falloff of the escape time distribution. The other is the value of $x$ at the peak of the escape time distribution. In Fig. \ref{tau_scaling}, the values of the characteristic frequency for each of these methods are plotted against the optical depth in the simulation. Overplotted is the line $x = \sqrt{27/2}\ (a\tau)^{1/3}$ for reference.
+
+It can be seen that at lower optical depths, the power law is somewhat steeper with an index of ~$1/2$. However, at larger optical depths, the escape time distribution characteristic frequency converges to a power law scaling of $(a\tau)^{1/3}$. Thus, in optically thick media, the eigenmode expansion solution method appears to be consistent with the expected analytic power law. In future work, I will increase the number of spatial and frequency eigenmodes used to obtain the escape time distributions from which the characteristic frequencies were extracted. This will confirm whether or not our solution method has converged, and will establish a comparative connection between that convergence and the power law trend. Additionally, I will test the other scalings that can be obtained by equating the temporal term in Eq. \ref{timedependent} to each of the other terms.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{tau_scaling.pdf}
+    \caption{Scaling of the characteristic frequency $x_0$ with the line-center optical depth, $\tau$. The escape time distributions were calculated with 6 spatial eigenmodes and 20 frequency eigenmodes.}
+    \label{tau_scaling}
+\end{figure}
+
+%\begin{equation}
+%    -3\frac{k\phi}{c}\frac{J}{t_0} = \frac{J}{r_0^2}
+%\end{equation}
+
+%\begin{equation}
+%    t_0 = \frac{-3r_0^2k\phi}{c}
+%\end{equation}
+
+
+\subsubsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
+
+My aim in this section is to understand the internal consistency of the closed-form solution for Ly$\alpha$ resonant scattering proposed by \cite{2006ApJ...649...14D}, which is presented alongside our analytic and numerical results for quantitative comparison. The solution utilizes an eigenfunction expansion to separate the spatial and frequency variables; however, the spatial eigenvalues explicitly depend on the frequency. Thus, this expansion is not a true separation of variables. To assess the validity of their final result, I calculate the flux at the surface, $H$, starting from an earlier expression for the mean intensity before the approximation is made. This is then compared against their calculated mean intensity at the surface of the sphere using the two-stream approximation boundary condition.
+
+In the two-stream approximation, it is assumed that the intensity is nearly isotropic---that is, it can be broken up into two components, $I_+(\tau)$ and $I_-(\tau)$. These will be referred to as the ``up'' and ``down'' intensities, respectively, and written shorthand as $I_+$ and $I_-$. The intensity is a function of the optical depth $\tau$ and angle $\mu = \cos{\theta}$, and is expressed in up and down components as
 
 \begin{equation}
     I(\tau, \mu) = I_+ \delta(\mu - 1/\sqrt{3}) + I_- \delta(\mu + 1/\sqrt{3})
 \end{equation}
 
-The delta functions in angle are offset by $\pm 1/\sqrt{3}$, due to the normalization condition that the radiation pressure must be equal to $1/3$ the photon energy density. Under addition in quadrature, this condition is satisfied. As will be explored in the review of \cite{2006ApJ...649...14D}'s closed-form solution, a less rigorous approach is to offset the angular delta functions by $1/2$, which yields a different surface boundary condition.  The mean intensity is calculated as follows.
+The delta functions in angle are offset by $\pm 1/\sqrt{3}$, due to the normalization condition that the radiation pressure must be equal to $1/3$ the photon energy density. Under addition in quadrature, this condition is satisfied. The mean intensity is calculated as follows.
 
 \begin{equation}
     \begin{split}
@@ -246,11 +263,7 @@ Combining the flux, $H$, and mean intensity, $J$, we arrive at the following rel
     \end{split}
 \end{equation}
 
-To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the next section, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity, and instead satisfies the condition $J = 2H$.
-
-\subsubsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
-
-My aim in this section is to understand the internal consistency of the closed-form solution for Ly$\alpha$ resonant scattering proposed by \cite{2006ApJ...649...14D}, which is presented alongside our analytic and numerical results for quantitative comparison. The solution utilizes an eigenfunction expansion to separate the spatial and frequency variables; however, the spatial eigenvalues explicitly depend on the frequency. Thus, this expansion is not a true separation of variables. To assess the validity of their final result, I calculate the flux at the surface, $H$, starting from an earlier expression for the mean intensity before the approximation is made. This is then compared against their calculated mean intensity at the surface of the sphere using the two-stream approximation boundary condition.
+To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the analysis that follows, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity, and instead satisfies the condition $J = 2H$.
 
 A few notational definitions must be made to relate various frequency and spatial variables. $x$, the distance from the source in Doppler widths, is related to the frequency variable $\sigma$ by 
 
@@ -392,7 +405,39 @@ Substituting in Eq. \ref{sigma} for $\sigma$, Eq. \ref{lineprofile} for $\phi$, 
     H(x) = \frac{1}{4\pi R^2}\frac{\sqrt{\pi}}{2\sqrt{24}a\tau_0} \left(\frac{x^2}{1 + \cosh{\left(\sqrt{2\pi^3/27}|x^3|/a\tau_0\right)}}\right)
 \end{equation}
 
-The two equations, Eq. \ref{final} and Eq. \ref{c17/4piR^2}, are related by the expression $J(x) = 2 H(x)$, suggesting that the two-stream boundary condition (Eq. \ref{bc}) is not satisfied.
+The two equations, Eq. \ref{final} and Eq. \ref{c17/4piR^2}, are related by the expression $J(x) = 2 H(x)$, suggesting that the two-stream boundary condition (Eq. \ref{bc}) is not satisfied. Instead of offsetting the angular delta functions by $1/\sqrt{3}$ to make the radiation pressure equal to one-third of the photon energy density, it is possible that Dijkstra used an offset of $1/2$. However, this yields an entirely different boundary condition, $J = 2H$, and does not properly normalize the radiation pressure.
+
+\subsection{Analytic Solutions Compared with Monte Carlo}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit0.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 0.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_0}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit6.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 6.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_6}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit12.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 12.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_12}
+\end{figure}
+
+One desired outcome of our work is to confirm that the analytic solution we present accurately characterizes the spectrum for the case where the monochromatic source of photons are not initialized with line-center frequencies. For each Monte Carlo dataset, the photons were initialized with a different starting frequency to evaluate the analytic solutions' accuracy with variation of the parameter $\rm \sigma_s$. This is related to the code parameter $\rm x_{init}$ by 
+\begin{equation} \label{sigma0_xinit}
+    \sigma_0 = \frac{\beta}{a} \rm x_{init}^3
+\end{equation}
+
+where $\beta = \sqrt{2 \pi ^2 / 27}$. Monte Carlo numerical simulations were performed with $\rm x_{init} = (0.0, 2.0, 4.0 ... 12.0)$ and optical depths $\tau_0 = (10^6, 10^7)$. In Fig. \ref{fig:sol_mc_residual_0}, \ref{fig:sol_mc_residual_6} and \ref{fig:sol_mc_residual_12}, these are compared with the analytic solutions at selected initial frequencies. In each of these figures, the contribution of the flux from our additive boundary condition correction, $H_{bc}$, is examined alongside the solutions $H_{\rm d}$ and $H_{\rm 0}$. The corrected solution, $H_{\rm 0 + bc} = H_{\rm 0} + H_{\rm bc}$, has considerably lower residuals to Monte Carlo than the other solutions, especially in the line wing. It is evident that the solution $H_{\rm d}$ derived by \citet{harrington1973} diverges significantly from the Monte Carlo simulations in the line wings. The $H_{\rm bc}$ correction term, when added to the solution $H_0$ derived by \citet{2006ApJ...649...14D}, produces a successful analytical result that characterizes the probability distribution of frequencies for escaping photons, including situations in which the photons are given initial frequencies outside of the line core.
+
+This can best be seen by comparing the results shown in Fig. \ref{fig:sol_mc_residual_0} with those in Fig. \ref{fig:sol_mc_residual_12}. The $\rm H_{0+bc}$ analytic solution remains accurate in the line wing when photons are emitted away from line center, while the residuals of $\rm H_d$ and $\rm H_0$ become noticeably larger. It can be concluded that the $\rm H_{bc}$ correction term more accurately represents the additional flux from photons that escape without ever being scattered through the line core.
 
 \bibliography{bibliography}{}
 \bibliographystyle{aasjournal}
