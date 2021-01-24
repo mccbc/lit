@@ -30,9 +30,35 @@
 
 \section{Literature Review}
 
+\begin{itemize}
+    \item Convey the central points of the literature.
+    \item Summarize the evidence and arguments for each point.
+    \item Acknowledge the limitations and implications of the prior work reported in the literature.
+    \item Develop suggestions for ways to resolve unanswered questions and follow up implications of the work.
+\end{itemize}
+
+\subsection{}
+
 \section{Research Overview}
 
+\begin{itemize}
+    \item Demonstrate an appropriate knowledge of the field in the area of research.
+    \item Demonstrate a clear understanding of the research goals.
+    \item Show a reasonable approach to the research goal.
+    \item Show creativity in the approach to the research.
+    \item Outline substantial progress toward the research goal during the year.
+\end{itemize}
+
+
 In this section I will outline the numerical work I have done since Summer 2020, and provide the analytic derivations that motivated some of that work.
+
+\subsection{Background}
+
+\subsection{Motivation}
+
+\subsection{Methods}
+
+\subsection{Results to Date}
 
 \subsection{Two-Stream Approximation Boundary Condition}
 
@@ -42,7 +68,7 @@ In the two-stream approximation for radiative transfer, it is assumed that the i
     I(\tau, \mu) = I_+ \delta(\mu - 1/\sqrt{3}) + I_- \delta(\mu + 1/\sqrt{3})
 \end{equation}
 
-The delta functions in angle are offset by factors of $\pm 1/\sqrt{3}$, due to the normalization condition that the radiation pressure must be equal to $1/3$ the photon energy density. Under addition in quadrature, this condition is satisfied. The mean intensity is calculated as follows.
+The delta functions in angle are offset by $\pm 1/\sqrt{3}$, due to the normalization condition that the radiation pressure must be equal to $1/3$ the photon energy density. Under addition in quadrature, this condition is satisfied. As will be explored in the review of \cite{2006ApJ...649...14D}'s closed-form solution, a less rigorous approach is to offset the angular delta functions by $1/2$, which yields a different surface boundary condition.  The mean intensity is calculated as follows.
 
 \begin{equation}
     \begin{split}
@@ -76,11 +102,13 @@ Combining the flux, $H$, and mean intensity, $J$, we arrive at the following rel
     \end{split}
 \end{equation}
 
-To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the next section, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity.
+To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the next section, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity, and instead satisfies the condition $J = 2H$.
 
 \subsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
 
-$x$, the distance from the source in Doppler widths, is related to the frequency variable $\sigma$ by 
+My aim in this section is to understand the internal consistency of the closed-form solution for Ly$\alpha$ resonant scattering proposed by \cite{2006ApJ...649...14D}. The solution utilizes an eigenfunction expansion to separate the spatial and frequency variables; however, the spatial eigenvalues explicitly depend on the frequency. Thus, this expansion is not a true separation of variables. To assess the validity of their final result, I calculate the flux at the surface, $H$, starting from an earlier expression for the mean intensity before the approximation is made.
+
+A few notational definitions must be made to relate various frequency and spatial variables. $x$, the distance from the source in Doppler widths, is related to the frequency variable $\sigma$ by 
 
 \begin{equation} \label{sigma}
     \sigma = \frac{\sqrt{2\pi/27}}{a} x^3
@@ -98,7 +126,7 @@ and
     R\kappa_0 = \tau_0
 \end{equation}
 
-Equation C17 in \citet{2006ApJ...649...14D} reads
+Now, the result for the mean intensity from the end of \cite{2006ApJ...649...14D}'s derivation (Equation C17) reads
 
 \begin{equation} \label{dijkstra}
     J(x) = \frac{\sqrt{\pi}}{\sqrt{24}a\tau_0}\left(\frac{x^2}{1 + \cosh{\sqrt{2\pi^3/27}(|x^3|/a\tau_0)}}\right)
@@ -110,7 +138,7 @@ However, this has been multiplied through by $4\pi R^2$ to obtain the total emer
     J(x) = \frac{1}{4\pi R^2}\frac{\sqrt{\pi}}{\sqrt{24}a\tau_0}\left(\frac{x^2}{1 + \cosh{\sqrt{2\pi^3/27}(|x^3|/a\tau_0)}}\right)
 \end{equation}
 
-This will be checked against the boundary condition
+This is checked against the boundary condition
 
 \begin{equation} \label{bc}
     J = \sqrt{3} H
@@ -128,7 +156,7 @@ Note that there is a typo in their equation, which I have resolved above. An ext
     \lambda_n = \frac{n\pi}{R}
 \end{equation}
 
-at lowest order. To find the flux, we calculate the following derivative.
+at lowest order. Note that it is the second order term in the expansion of $\lambda_n$ that contains the line profile, which is frequency-dependent. To find the flux, we calculate the following derivative.
 
 \begin{equation}
     \begin{split}
