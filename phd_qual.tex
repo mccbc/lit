@@ -30,13 +30,6 @@
 
 \section{Literature Review}
 
-\begin{itemize}
-    \item Convey the central points of the literature.
-    \item Summarize the evidence and arguments for each point.
-    \item Acknowledge the limitations and implications of the prior work reported in the literature.
-    \item Develop suggestions for ways to resolve unanswered questions and follow up implications of the work.
-\end{itemize}
-
 \subsection{Definitions}
 %% What are things I learned in order to understand this paper?
 \begin{itemize}
@@ -50,29 +43,35 @@
     \item A \textbf{line profile} is the shape of a spectral line on an intensity v. frequency plot. In our work we use a Voigt profile, which is the convolution of a Lorentzian (line wing) and a Gaussian (Doppler core) profile. For our purposes, we ignore the Doppler core contribution and use only the Lorentzian, since we care most about the solutions' behavior in the line wing.
 \end{itemize}
 
-
-
 \subsection{Scientific Purpose}
 %% What is the science question addressed by the paper?
-It is shown that resonance-line radiation transfer in low-density, optically-thick media can be described by the Poisson equation. The mean number of scatterings for escape are calculated, as well as the center and surface line profiles.
+In this paper, it is shown that resonance-line radiation transfer in low-density, optically-thick media can be described by the Poisson equation. The equation is then solved using an eigenfunction expansion. The mean number of scatterings for escape are calculated, as well as the center and surface line profiles.
+
+The optical depth is assumed to be so large that the transfer problem is dominated by the redistribution of radiation in the damping wings of the line. Modeling redistribution as a diffusion in frequency space naturally leads to a partial differential equation which turns out to be the Poisson equation. The resulting analytic solution is valid in the limit of large optical depth and is reported to match well with numerical results.
 
 \subsection{Methods}
 %% What is the method used to address the science question?
-The condition for this analytic solution is that the optical depth is so large, the transfer problem is dominated by the redistribution of radiation in the damping wings of the line. Modeling redistribution as a diffusion in frequency space naturally leads to a partial differential equation which turns out to be the Poisson equation. The resulting analytic solution is valid in the limit of large optical depth and matches well to numerical results.
+The physical setup of the problem is a uniform plane-parallel slab. The intensity is assumed to be nearly isotropic under the two-stream approximation (more specifically, what the author refers to as the ``Eddington approximation''). The derivation that follows relies upon the redistribution function and its expansion given by \cite{hummer1962} and \cite{1972ApJ...174..439A}, respectively. 
+
+The accuracy of the solution put forth in this paper is limited by the treatment of the boundary conditions. In the eigenfunction expansion, the spatial and frequency components of the differential equation are separated, yet the spatial eigenvalues are defined as being explicitly frequency-dependent. The resulting solution would suggest the mean intensity at the boundary of the slab is zero, if not for an additional approximation made to produce a finite, non-zero result.
 
 %\subsection{Citeable Results}
 %%% A list of citeable results in the paper
 %\begin{itemize}
 %    \item
 %\end{itemize}
-\subsection{Derivations}
+%\subsection{Derivations}
 %%% Derivations of any critical equations that appear in the paper
+
+Harrington's derivation begins with a second-order differential equation for the mean intensity.
 
 \begin{equation} \label{harrington1}
     \frac{1}{3\phi^2(x)}\frac{d^2J(\tau, x)}{d\tau^2} = J(\tau, x) - (1-\epsilon)\int_{-\infty}^{\infty}J(\tau, x')q(x, x')dx' - \frac{G(\tau)}{4\pi}
 \end{equation}
 
-The general redistribution function, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded according to \cite{1971JQSRT..11.1365A}. Notably, they define the integrated complementary error function as 
+In order of appearance, the terms in this equation can be explained by their contributions to the behaviors of radiative transfer. $J(\tau, x)$ is a scattering sink term, and the integral is a source term which represents those photons which have scattered to a new frequency $x'$. The $(1-\epsilon)$ factor in front of the integral represents the possibility of photon destruction through collisional de-excitation, and acts to reduce the number of photons produced by the source term it multiplies. $G(\tau)$ is a source term representing thermal emission, in units of radiation per unit area per unit mean optical depth. 
+
+In the following steps of the derivation, Harrington reduces the problem to a Poisson equation by evaluating and expanding several of these terms. For example, the general redistribution function within the integral, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded according to \cite{1971JQSRT..11.1365A}. Notably, they define the integrated complementary error function as 
 
 \begin{equation}
     \mathrm{ierfc}(z) \equiv \int_z^{\infty} \mathrm{erfc}(t) dt = \frac{1}{\sqrt{\pi}} e^{-z^2} - z\  \mathrm{erfc}(z)
@@ -85,7 +84,7 @@ which Harrington incorrectly writes down as ``$i\ \mathrm{erfc(...)}$''. The fir
     R_{II-A}(x, x') \approx \frac{1}{2}\mathrm{erfc}(|r|+|s|) + \left(1 - \frac{a^2}{s^2} + \frac{a^4}{s^4}\right) \frac{a}{\pi s^2} \mathrm{ierfc}(|r|) + ...
 \end{equation}
 
-with $r=(x-x')/2$ and $s=(x+x')/2$. The first term is ignored in the line wings (TODO: why?), and the remaining leading term of order $1/s^2$ is simply
+with $r=(x-x')/2$ and $s=(x+x')/2$. The first term in this expansion is ignored in the line wings, since it comes directly from the leading-order Gaussian term in the expansion of the Voigt profile. The next term of order $1/s^2$ is simply
 
 \begin{equation}
     R_{II-A}(x, x') \approx \frac{a}{\pi s^2}\mathrm{ierfc}(|r|)
@@ -97,7 +96,7 @@ Division by the line profile, approximated as $\phi(x) \approx a/(\pi x^2)$, yie
     q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)
 \end{equation}
 
-using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation seems to come from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$. However, if this approximation was used in the original expression $x^2/s^2$, the coefficient of the integrated error function would simply be 1.
+using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$ at second order.
 
 The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a Taylor series about $x$.
 
@@ -141,7 +140,7 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
    \end{split}
 \end{equation}
 
-\subsection{Discussion and Concerns}
+%\subsection{Discussion and Concerns}
 %% Are there any red flags?
 
 %\subsection{Personal Relevance}
@@ -150,29 +149,62 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
 %\subsection{Summary}
 %%% Reread the abstract, and offer summarizing commentary.
 % --------------------------- %
-
+\newpage
 \section{Research Overview}
 
-\begin{itemize}
-    \item Demonstrate an appropriate knowledge of the field in the area of research.
-    \item Demonstrate a clear understanding of the research goals.
-    \item Show a reasonable approach to the research goal.
-    \item Show creativity in the approach to the research.
-    \item Outline substantial progress toward the research goal during the year.
-\end{itemize}
+\subsection{Introduction}
 
+ A central problem in the study of exoplanet atmospheres is how to treat radiation in optically thick environments, where light is scattered much more readily than it is transmitted. My work over the past year has found and tested analytic solutions of the radiative transfer equation for resonant scattering of Lyman-alpha (Ly$\alpha$) photons by dense gases. The results of this work will be used to create a scheme to accelerate the Monte Carlo transfer in regions of high optical depth. The impact of this project is that it will allow rapid hydrodynamic calculations of irradiated exoplanet atmospheres.
 
-In this section I will outline the numerical work I have done since Summer 2020, and provide the analytic derivations that motivated some of that work.
-
-\subsection{Background}
-
-\subsection{Motivation}
+Observations by \textit{Hubble Space Telescope} have found deep Ly$\alpha$ transits by the exoplanets HD 209458b (Vidal-Madjar et al. 2003), HD 189733b (Lecavelier et al. 2012), and  GJ 436b (Ehrenreich et al. 2015), indicating the presence of large exospheric clouds produced by escaping hydrogen atoms. These clouds are thought to originate as winds driven from the planets by the intense host star radiation. Radiation forces due to the large opacity in the Ly$\alpha$ line are expected to have a large impact on the cloud's dynamics. Modeling the interplay between radiation and hydrodynamics in these atmospheric outflows is a difficult problem, as Monte Carlo simulations are inherently time-consuming and computationally expensive. In the much simpler problem of light from a central point-source escaping a sphere of uniform density, the mean number of scatterings for a single photon can reach $10^{7}$ or higher for large optical depths, requiring a significant time investment to calculate numerically. \textbf{This is why I have computed the frequency-dependent spectrum and escape time distribution of the emergent photons directly, saving hundreds of CPU-hours. This analytic distribution is sampled to calculate the mean intensity and flux at a fraction of the computational cost of traditional numerical methods.} I compare these new analytic solutions for photon escape time distributions to Monte Carlo simulations to establish their relative validity in the limit of large Ly$\alpha$ line-center optical depth. In simulation zones with large optical depth, millions of steps can be replaced by one ``superstep'', drawing from my tabulated distributions. Once the solution is confirmed to match the experimental results, this method will be applied to grid cells in a radiation-hydrodynamic simulation for comparison with Athena++ (Stone et al. 2019), a leading radiation magnetohydrodynamics (Rad-MHD) code. By obtaining the radiation pressure on each cell face, hydrodynamic forces can be calculated in each cell without the need to simulate comings and goings of individual photons.
 
 \subsection{Methods}
 
+As a first step, I wrote a Monte Carlo radiative transfer code in \texttt{FORTRAN} that tabulates escape times and angles of photons escaping from a sphere of uniform density. From these quantities, the outgoing flux and mean intensity at the surface of the sphere are easily calculated. In practice, a more sophisticated MCRT code written by Phil Arras is used to collect data for our escape time distributions. Separately, I wrote an analytic solver in Python that outputs the flux and mean intensity at all points within the sphere based on the radiative transfer solution. The solver operates in three main stages. First, I expand the spatial dependence of the transfer equation in terms of spherical Bessel functions, and separate the time dependence as a Fourier series. I use a set number of spatial eigenmodes $n$, photon frequencies $\sigma$, and oscillation frequencies $\omega$ to calculate Fourier coefficients $J(n, \sigma, \omega)$. Then, these Fourier coefficients are used to calculate the mean intensity $J$ and flux $H$ as a function of radius $r$, photon frequency $\sigma$, and time $t$. Finally, the flux at the surface of the sphere is evaluated to find the probability distribution of photon escape times.
+
+Developing this solver was a key step in that it allowed for direct comparison between the analytic solutions and the Monte Carlo radiation transfer results. However, upon further analysis, it was found that our initial approach to finding numerical solutions was somewhat flawed. The problem is much better suited to an expansion using Laplace transforms, rather than Fourier transforms. With this approach, an imaginary frequency variable $s = i\omega$ is swept through to find resonant responses from the equation. When a resonance is detected, a refinement algorithm hones in on the peak and returns an eigenfrequency. A sum of eigenfunctions corresponding to these eigenfrequencies will return a solution for the mean intensity, which can be used to find the flux and consequently the wait time distribution for photons escaping the sphere.
+
+The code that makes up the new analytic solver takes input parameters that determine the number of desired spatial and frequency eigenmodes. To determine where (and how) the result converges, I will increase the number of eigenmodes and characterize how the resulting wait time distributions are affected. Once the outputs have converged satisfactorily, I will have confirmed that the solver accurately represents the true analytic solution. To use the escape time distribution as a Monte Carlo accelerant, it must show a correctly-shaped rise and exponential falloff. I will isolate groups of photons from the Monte Carlo based on their escape frequencies, and compare the escape time distributions of these sub-populations against the analytic result.
+
+ These aims will quantify how well our analytic approach matches the equivalent numerical techniques, and their successful completion will form the basis for chapter 1 of my PhD thesis as a part of a broader effort to explore advanced numerical techniques in radiative transfer astrophysics. In follow-up work to be completed after my Master's defense, I will turn the results of this study into an acceleration scheme that will enable high-performance radiation hydrodynamics simulations of irradiated exoplanets. I anticipate that the method developed here may also be used in other contexts where Ly$\alpha$ transport is important, including emission from galaxies in the early universe.
+
 \subsection{Results to Date}
 
-\subsection{Two-Stream Approximation Boundary Condition}
+Analytic groundwork was done to validate (or call into question) assumptions made in the theory papers preceding our work. In this section, these derivations are presented alongside numerical results to provide context and to illustrate the motivation for our more sophisticated analytic solution to this resonant scattering problem.
+
+\subsection{Analytic Solutions Compared with Monte Carlo}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit0.0.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 0.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_0}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit6.0.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 6.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_6}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{pdf_xinit12.0.pdf}
+    \caption{Analytic solution for the outgoing spectrum compared with Monte Carlo at a line center optical depth of $\tau_0 = 1 \times 10^7$. Photons are initialized with $\rm x = 12.0$. In the log-scale plot in the second panel, $|\rm H_{bc}|$ is shown instead of $\rm H_{bc}$.} 
+    \label{fig:sol_mc_residual_12}
+\end{figure}
+
+One desired outcome of our work is to confirm that the analytic solution we present accurately characterizes the spectrum for the case where the monochromatic source of photons are not initialized with line-center frequencies. For each Monte Carlo dataset, the photons were initialized with a different starting frequency to evaluate the analytic solutions' accuracy with variation of the parameter $\rm \sigma_s$. This is related to the code parameter $\rm x_{init}$ by 
+\begin{equation} \label{sigma0_xinit}
+    \sigma_0 = \frac{\beta}{a} \rm x_{init}^3
+\end{equation}
+
+where $\beta = \sqrt{2 \pi ^2 / 27}$. Monte Carlo numerical simulations were performed with $\rm x_{init} = (0.0, 2.0, 4.0 ... 12.0)$ and optical depths $\tau_0 = (10^6, 10^7)$. In Fig. \ref{fig:sol_mc_residual_0}, \ref{fig:sol_mc_residual_6} and \ref{fig:sol_mc_residual_12}, these are compared with the analytic solutions at selected initial frequencies. In each of these figures, the contribution of the flux from our additive boundary condition correction, $H_{bc}$, is examined alongside the solutions $H_{\rm d}$ and $H_{\rm 0}$. The corrected solution, $H_{\rm 0 + bc} = H_{\rm 0} + H_{\rm bc}$, has considerably lower residuals to Monte Carlo than the other solutions, especially in the line wing. It is evident that the solution $H_{\rm d}$ derived by \citet{harrington1973} diverges significantly from the Monte Carlo simulations in the line wings. The $H_{\rm bc}$ correction term, when added to the solution $H_0$ derived by \citet{2006ApJ...649...14D}, produces a successful analytical result that characterizes the probability distribution of frequencies for escaping photons, including situations in which the photons are given initial frequencies outside of the line core.
+
+This can best be seen by comparing the results shown in Fig. \ref{fig:sol_mc_residual_0} with those in Fig. \ref{fig:sol_mc_residual_12}. The $\rm H_{0+bc}$ analytic solution remains accurate in the line wing when photons are emitted away from line center, while the residuals of $\rm H_d$ and $\rm H_0$ become noticeably larger. It can be concluded that the $\rm H_{bc}$ correction term more accurately represents the additional flux from photons that escape without ever being scattered through the line core.
+
+\subsubsection{Two-Stream Approximation Boundary Condition}
 
 In the two-stream approximation for radiative transfer, it is assumed that the intensity is nearly isotropic---that is, it can be broken up into two components, $I_+(\tau)$ and $I_-(\tau)$. These will be referred to as the ``up'' and ``down'' intensities, respectively, and written shorthand as $I_+$ and $I_-$. The intensity is a function of the optical depth $\tau$ and angle $\mu = \cos{\theta}$, and is expressed in up and down components as
 
@@ -216,9 +248,9 @@ Combining the flux, $H$, and mean intensity, $J$, we arrive at the following rel
 
 To obtain a boundary condition that can be applied to our problem, we state that the incoming flux at the surface must be equal to zero, i.e. there is no external radiation. Therefore, at the surface, $I_- = 0$ and thus $J=\sqrt{3}H$. In the next section, I will demonstrate that the derivation in \cite{2006ApJ...649...14D} does not satisfy this surface boundary condition for the flux and mean intensity, and instead satisfies the condition $J = 2H$.
 
-\subsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
+\subsubsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
 
-My aim in this section is to understand the internal consistency of the closed-form solution for Ly$\alpha$ resonant scattering proposed by \cite{2006ApJ...649...14D}. The solution utilizes an eigenfunction expansion to separate the spatial and frequency variables; however, the spatial eigenvalues explicitly depend on the frequency. Thus, this expansion is not a true separation of variables. To assess the validity of their final result, I calculate the flux at the surface, $H$, starting from an earlier expression for the mean intensity before the approximation is made.
+My aim in this section is to understand the internal consistency of the closed-form solution for Ly$\alpha$ resonant scattering proposed by \cite{2006ApJ...649...14D}, which is presented alongside our analytic and numerical results for quantitative comparison. The solution utilizes an eigenfunction expansion to separate the spatial and frequency variables; however, the spatial eigenvalues explicitly depend on the frequency. Thus, this expansion is not a true separation of variables. To assess the validity of their final result, I calculate the flux at the surface, $H$, starting from an earlier expression for the mean intensity before the approximation is made. This is then compared against their calculated mean intensity at the surface of the sphere using the two-stream approximation boundary condition.
 
 A few notational definitions must be made to relate various frequency and spatial variables. $x$, the distance from the source in Doppler widths, is related to the frequency variable $\sigma$ by 
 
