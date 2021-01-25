@@ -407,7 +407,7 @@ Substituting in Eq. \ref{sigma} for $\sigma$, Eq. \ref{lineprofile} for $\phi$, 
 
 The two equations, Eq. \ref{final} and Eq. \ref{c17/4piR^2}, are related by the expression $J(x) = 2 H(x)$, suggesting that the two-stream boundary condition (Eq. \ref{bc}) is not satisfied. Instead of offsetting the angular delta functions by $1/\sqrt{3}$ to make the radiation pressure equal to one-third of the photon energy density, it is possible that Dijkstra used an offset of $1/2$. However, this yields an entirely different boundary condition, $J = 2H$, and does not properly normalize the radiation pressure.
 
-\subsection{Analytic Solutions Compared with Monte Carlo}
+\subsubsection{Analytic Solutions Compared with Monte Carlo}
 
 \begin{figure}
     \centering
@@ -438,6 +438,22 @@ One desired outcome of our work is to confirm that the analytic solution we pres
 where $\beta = \sqrt{2 \pi ^2 / 27}$. Monte Carlo numerical simulations were performed with $\rm x_{init} = (0.0, 2.0, 4.0 ... 12.0)$ and optical depths $\tau_0 = (10^6, 10^7)$. In Fig. \ref{fig:sol_mc_residual_0}, \ref{fig:sol_mc_residual_6} and \ref{fig:sol_mc_residual_12}, these are compared with the analytic solutions at selected initial frequencies. In each of these figures, the contribution of the flux from our additive boundary condition correction, $H_{bc}$, is examined alongside the solutions $H_{\rm d}$ and $H_{\rm 0}$. The corrected solution, $H_{\rm 0 + bc} = H_{\rm 0} + H_{\rm bc}$, has considerably lower residuals to Monte Carlo than the other solutions, especially in the line wing. It is evident that the solution $H_{\rm d}$ derived by \citet{harrington1973} diverges significantly from the Monte Carlo simulations in the line wings. The $H_{\rm bc}$ correction term, when added to the solution $H_0$ derived by \citet{2006ApJ...649...14D}, produces a successful analytical result that characterizes the probability distribution of frequencies for escaping photons, including situations in which the photons are given initial frequencies outside of the line core.
 
 This can best be seen by comparing the results shown in Fig. \ref{fig:sol_mc_residual_0} with those in Fig. \ref{fig:sol_mc_residual_12}. The $\rm H_{0+bc}$ analytic solution remains accurate in the line wing when photons are emitted away from line center, while the residuals of $\rm H_d$ and $\rm H_0$ become noticeably larger. It can be concluded that the $\rm H_{bc}$ correction term more accurately represents the additional flux from photons that escape without ever being scattered through the line core.
+
+\subsection{Conclusions}
+
+\subsection{Thesis Plan}
+
+I will spend the next 2 years on this project, funded via a research grant by Phil Arras. During this time, the work I do on radiation transfer in exoplanet atmospheres will form the first few chapters of PhD thesis. When the project is neatly wrapped up at the end of the funding period, I will return to work on hydrodynamic calculations of Type II X-ray bursts.
+
+Our paper, ``Resonant Scattering in a Uniform Sphere with Large Optical Depth'', will be published in February of 2021. This paper will introduce our semianalytic approach to accelerated Monte Carlo radiation transfer and compare its performance to previous solutions by \cite{harrington1973} and \cite{2006ApJ...649...14D}. 
+
+In the Spring 2021 semester, I will work to produce a 1D calculation of the effects of irradiating an atmosphere, taking radiative and pressure forces into account. Having introduced an acceleration scheme for Monte Carlo radiative transfer, we can now simulate the thicker, deeper parts of the atmosphere where Ly$\alpha$ radiation might be able to break up molecules in an earth-like planet. This radiation could also cause excitation that could explain H-alpha and H-beta absorption in exoplanet atmospheres \citep{2017ApJ...851..150H}. Since much can be learned from extending the radiative transfer calculations to high densities, we can increase the value of our computation time by accelerating the Monte Carlo simulations at high optical depths.
+
+This upcoming paper is exploring how we accelerate using analytic solutions. We realized we needed the mean intensity inside the grid to get the escape time distribution, so we did that. Goal is if we can finish this paper on the semianalytic stuff in the next months, we right away try to get the accelerated monte carlo code working. We want to then do 1D hydrodynamics and focus on the radiation pressure forces. We can do this analtically as well, which means we can check our MC accelerated numerical results against the 1D analytic result. By the end of this summer we will have this second paper out. 
+
+Three years of funding during the academic year starts this coming year for the grant. This upcoming year is guaranteed because it's internal to UVa, but the other two years depend on getting extensions for the grant. It's important that we can show forward progress, which is why we want to publish two papers before the grant extension application is due. Now that I'm on board we're making all this progress, so we can justify the extension. If we have 1-2 papers by the following summer (2022), we will be in a good position to ask NASA for an extension. We would also like to publish 1-2 applications papers in the following year to justify even more funding for the 3rd year.
+
+(When I finish my PhD, here is what I will have contributed to astronomy). We have pushed forward the study of exoplanetary research by calculating radiation forces, excitation, and heating of the upper atmospheres of exoplanets. We will apply these results for direct comparison with the aforementioned Hubble observations.
 
 \bibliography{bibliography}{}
 \bibliographystyle{aasjournal}
