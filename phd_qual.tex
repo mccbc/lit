@@ -48,11 +48,11 @@
 %% What is the science question addressed by the paper?
 In this paper, it is shown that resonance-line radiation transfer in low-density, optically-thick media can be described by the Poisson equation. The equation is then solved using an eigenfunction expansion. The mean number of scatterings for escape are calculated, as well as the center and surface line profiles.
 
-The optical depth is assumed to be so large that the transfer problem is dominated by the redistribution of radiation in the damping wings of the line. Modeling redistribution as a diffusion in frequency space naturally leads to a partial differential equation which turns out to be the Poisson equation. (Add more explanation about poisson) The resulting analytic solution is valid in the limit of large optical depth and is reported to match well with numerical results.
+The optical depth is assumed to be so large that the transfer problem is dominated by the redistribution of radiation in the damping wings of the line. Modeling redistribution as a diffusion in frequency space naturally leads to a partial differential equation which can be written as the Poisson equation, assuming that the frequency is sufficiently far from line center and that the redistribution in frequency for each scattering is small. The resulting analytic solution is valid in the line wing under the limit of large optical depth, and it is reported to match well with numerical results.
 
 \subsection{Methods}
 %% What is the method used to address the science question?
-The physical setup of the problem is a uniform plane-parallel slab. The intensity is assumed to be nearly isotropic under the two-stream approximation (more specifically, what the author refers to as the ``Eddington approximation''). The derivation that follows relies upon the redistribution function and its expansion given by \cite{hummer1962} and \cite{1972ApJ...174..439A}, respectively. 
+The physical setup of the problem is a uniform plane-parallel slab. The spatial coordinate, $\tau$, represents the optical depth, with $\tau=0$ at the center of the slab and $\tau=\pm B$ on either boundary. The photon frequency is represented by the coordinate $x$ in units of Doppler widths. The intensity is assumed to be nearly isotropic under the two-stream approximation (more specifically, what the author refers to as the ``Eddington approximation''). The derivation that follows relies upon the redistribution function and its expansion given by \cite{hummer1962} and \cite{1972ApJ...174..439A}, respectively. 
 
 %\subsection{Derivations}
 %%% Derivations of any critical equations that appear in the paper
@@ -65,7 +65,7 @@ Harrington's derivation begins with a second-order differential equation for the
 
 In order of appearance, the terms in this equation can be explained by their contributions to the behaviors of radiative transfer. $J(\tau, x)$ is a scattering sink term, and the integral is a source term which represents those photons which have scattered to a new frequency $x$ from a frequency $x'$. The $(1-\epsilon)$ factor in front of the integral represents the possibility of photon destruction through collisional de-excitation, and acts to reduce the number of photons produced by the source term it multiplies. $G(\tau)$ is a source term representing thermal emission, in units of radiation per unit area per unit mean optical depth. 
 
-In the following steps of the derivation, Harrington reduces the problem to a Poisson equation by evaluating and expanding several of these terms. This is accomplished by 1) assuming that x is much larger than unity, meaning the frequencies in question are in the line wing, and 2) assuming that $|x'-x|$ is of order unity, meaning the frequency shift caused by redistribution is much smaller than the frequencies themselves. The following expansions are done in the limit of $|x-x'|$ being small. In Harrington's reasoning, this justifies the approximation of the line profile as a Lorentzian, which is accurate only in the line wing.
+In the following steps of the derivation, Harrington reduces the problem to a Poisson equation by evaluating and expanding several of these terms. This is accomplished by 1) assuming that $x$ is much larger than unity, meaning the frequencies in question are in the line wing, and 2) assuming that $|x'-x|$ is of order unity, meaning the frequency shift caused by redistribution is much smaller than the frequencies themselves. This justifies the approximation of the line profile as a Lorentzian, which is accurate only in the line wing. The following expansions are done in the limit of $|x-x'|$ being small. 
 
 The general redistribution function within the integral, $q(x, x') = R_{II-A}(x, x')/\phi (x)$, is expanded according to \cite{1971JQSRT..11.1365A}. Notably, they define the integrated complementary error function as 
 
@@ -73,41 +73,37 @@ The general redistribution function within the integral, $q(x, x') = R_{II-A}(x,
     \mathrm{ierfc}(z) \equiv \int_z^{\infty} \mathrm{erfc}(t) dt = \frac{1}{\sqrt{\pi}} e^{-z^2} - z\  \mathrm{erfc}(z)
 \end{equation}
 
-which Harrington incorrectly writes down as ``$i\ \mathrm{erfc(...)}$''. The first terms in the expansion are 
+\noindent which Harrington incorrectly writes down as ``$i\ \mathrm{erfc(...)}$''. The first terms in the expansion are 
 
 \begin{equation}
     R_{II-A}(x, x') \approx \frac{1}{2}\mathrm{erfc}(|r|+|s|) + \left(1 - \frac{a^2}{s^2} + \frac{a^4}{s^4}\right) \frac{a}{\pi s^2} \mathrm{ierfc}(|r|) + ...
 \end{equation}
 
-with $r=(x-x')/2$ and $s=(x+x')/2$. The first term in this expansion is ignored in the line wings, since it comes directly from the leading-order Gaussian term in the expansion of the Voigt profile. The next term of order $1/s^2$ is simply
+\noindent with $r=(x-x')/2$ and $s=(x+x')/2$. The first term in this expansion is ignored in the line wings, since it comes directly from the leading-order Gaussian term in the expansion of the Voigt profile. The next term of order $1/s^2$ is simply
 
 \begin{equation}
     R_{II-A}(x, x') \approx \frac{a}{\pi s^2}\mathrm{ierfc}(|r|)
 \end{equation}
 
-By the same reasoning, the line profile $\phi$ can be approximated as $\phi(x) \approx a/(\pi x^2)$ in the line wing. Dividing the redistribution function by this approximate line profile yields 
+\noindent By the same reasoning, the line profile $\phi$ can be approximated as $\phi(x) \approx a/(\pi x^2)$ in the line wing. Dividing the redistribution function by this approximate line profile yields 
 
 \begin{equation}
     q(x, x') = \frac{x^2}{s^2} \mathrm{ierfc}(|r|) \approx \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)
 \end{equation}
 
-using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$ at second order.
-
-The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a Taylor series about $x$.
+\noindent using the binomial approximation to obtain $x^2/s^2 = (r+s)^2/s^2 = (1+r/s)^2 \approx 1 + 2r/s \approx 1 + 2r/x$. The last step in this approximation comes from the understanding that as long as $|x-x'|\ll 1$, $s \approx x$ at second order. The $J(x')$ term in the integral in Eq. \ref{harrington1} is then expanded in a Taylor series about $x$.
 
 \begin{equation}
     J(x') \approx J(x) + \frac{dJ(x)}{dx}(x' - x) + \frac{1}{2}\frac{d^2J(x)}{dx^2}(x'-x)^2 + ...
 \end{equation}
 
-Changing variables to $r$, the integral becomes
+\noindent Changing variables to $r$, the integral becomes
 
 \begin{equation}
     2 \int_{-\infty}^{\infty} \left(1+\frac{2r}{x}\right)\left(\frac{1}{\sqrt{\pi}}e^{-r^2} - |r|\ \mathrm{erfc}(|r|)\right)\left[J(x) - 2\frac{dJ(x)}{dx}r + 2\frac{d^2J(x)}{dx^2}r^2 + ...\right] dr
 \end{equation}
 
-where the minus sign introduced by the change of variables has been used to flip the bounds of integration, which would nominally go from $\infty$ to $-\infty$ under the variable $r$.
-
-The various combinations of terms evaluate as the following:
+\noindent where the minus sign introduced by the change of variables has been used to flip the bounds of integration, which would nominally go from $\infty$ to $-\infty$ under the variable $r$. The various combinations of terms evaluate as the following:
 
 \begin{itemize}
     \item $\int_{-\infty}^{\infty} e^{-r^2} dr = \sqrt{\pi}$
@@ -118,7 +114,7 @@ The various combinations of terms evaluate as the following:
     \item $\int_{-\infty}^{\infty} r^2 |r|\ \mathrm{erfc}(|r|)\ dr = 3/8$
 \end{itemize}
 
-Therefore, collecting nonzero terms and evaluating the integral, we are left with
+\noindent Therefore, collecting nonzero terms and evaluating the integral, we are left with
 
 \begin{equation}
     \begin{split}
@@ -135,7 +131,7 @@ Therefore, collecting nonzero terms and evaluating the integral, we are left wit
    \end{split}
 \end{equation}
 
-The physical implications of each of these terms is illuminating to consider. The first, $J(x)$, is an emission term that will cleanly cancel with the corresponding absorption term in the transfer equation. The next term, $-\frac{1}{x}\frac{dJ(x)}{dx}$, determines the mean change in frequency per scattering. Since it varies inversely with $x$, it serves to trap the photons at line center. The closer the photon's frequency $x$ is to zero, the larger contribution this term will have and the harder it will be for the photon's to escape out of the line's core. The second term, $\frac{1}{2}\frac{d^2J(x)}{dx^2}$ gives rise to diffusion. The second derivative serves to make the photon increment its frequency, $x$, by 1 in either direction. The absence of any frequency term in front means this ``random walk'' behavior isn't affected by the strongly-peaked line profile. Together, the two terms act to randomly diffuse photons in frequency space, with a mean shift that tends toward line center.
+The physical implications of each of these terms is illuminating to consider. The first, $J(x)$, is an emission term that will cleanly cancel with the corresponding absorption term in the transfer equation. The next term, $-\frac{1}{x}\frac{dJ(x)}{dx}$, is a radiation sink which is related to the mean change in frequency per scattering. Since it varies inversely with $x$, it serves to trap the photons at line center. The closer the photon's frequency $x$ is to zero the larger this sink will be, making it much harder for line center photons to escape. The second term, $\frac{1}{2}\frac{d^2J(x)}{dx^2}$ gives rise to diffusion. The second derivative serves to make the photon increment its frequency, $x$, by 1 in either direction. The absence of any frequency term in front means this ``random walk'' behavior isn't affected by the strongly-peaked line profile. Together, the two terms act to randomly diffuse photons in frequency space, with a mean shift that tends toward line center.
 
 Keeping up to second order terms, the integral is plugged in to the original differential equation, Eq. \ref{harrington1}. Introducing a suitable change of variables, we will see that the problem reduces to the Poisson equation. We will continue to use the optical depth $\tau$ to represent the spatial dimension, but will now use $\sigma$ to represent the photon frequency. $\sigma$ is defined as
 
@@ -143,53 +139,95 @@ Keeping up to second order terms, the integral is plugged in to the original dif
     \sigma(x) = \int_0^x \sqrt{\frac{2}{3}}\frac{1}{\phi(x)}dx
 \end{equation}
 
-such that
+\noindent such that
 
 \begin{equation}
     \frac{dx}{d\sigma} = \sqrt{\frac{3}{2}}\phi(x).
 \end{equation}
 
-Under this change of variables, a new approximation can be made at large $x$. In the line wings, $\phi \approx a/(\pi x^2)$ and $\sigma$ becomes
+\noindent Under this change of variables, the following approximation can be made at large $x$. In the line wings, $\phi \approx a/(\pi x^2)$ and $\sigma$ becomes
 
 \begin{equation}
     \sigma(x) \approx \int_0^x \sqrt{\frac{2}{3}}\frac{\pi x^2}{a}dx = \sqrt{\frac{2}{3}} \frac{\pi}{a}\frac{x^3}{3}
 \end{equation}
 
-A convenient cancellation under this approximation turns the coefficient of some of the diffusion terms to zero, reducing the frequency dependence to a second derivative of $J$ with respect to $\sigma$. The transfer equation is now
+\noindent A convenient cancellation turns the coefficient of some of the diffusion terms in our transfer equation to zero, reducing the frequency dependence to a second derivative of $J$ with respect to $\sigma$. The transfer equation is now
 
 \begin{equation}
     \frac{\partial^2J}{\partial \tau ^2} + \frac{\partial ^2 J}{\partial \sigma^2} = 3\phi^2 \left[\epsilon J - \frac{G}{4\pi}\right]
 \end{equation}
 
-Thus, we have our Poisson equation. The equation states plainly that the diffusion through both space and frequency are described by a sink of radiation caused by collisional de-excitation and a thermal source of radiation, which are both sensitively dependent on the strongly-peaked line profile. Harrington replaces the line profile by a delta function in $sigma$, normalizing it appropriately such that the equation left to solve is 
+\noindent Thus, we have our Poisson equation. The equation states plainly that the diffusion through both space and frequency is described by a sink of radiation caused by collisional de-excitation and a thermal source of radiation, which are both sensitively dependent on the strongly-peaked line profile. Harrington replaces the line profile by a delta function in $\sigma$, normalizing it appropriately such that the equation left to solve is 
 
 \begin{equation}
     \frac{\partial^2J}{\partial \tau ^2} + \frac{\partial ^2 J}{\partial \sigma^2} = \sqrt{6} \left[\epsilon J - \frac{G}{4\pi}\right]\delta(\sigma)
 \end{equation}
 
-Here, Harrington introduces a boundary condition based on the two-stream approximation. With regard to the physical setup of the problem, the boundaries are defined to be at optical depths $+B$ and $-B$ for a total optical thickness $2B$. The condition, $J=-2H$ at the upper boundary and $J=2H$ at the lower, relates the mean intensity to the flux at the surfaces under the assumption that there are no external sources of radiation. Using the definition that $H = -\frac{1}{3\phi}\frac{\partial J}{\partial \tau}$ we find
+Here, Harrington introduces a boundary condition based on the two-stream approximation. With regard to the physical setup of the problem, the boundaries are defined to be at optical depths $+B$ and $-B$ for a total optical thickness $2B$. The conditions $J=-2H$ at the upper boundary and $J=2H$ at the lower relates the mean intensity to the flux at the surfaces under the assumption that there are no external sources of radiation. Using the definition that $H = -\frac{1}{3\phi}\frac{\partial J}{\partial \tau}$ we find
 
-\begin{equation}
-    \begin{split}
+\begin{equation}\label{harringtonbc}
+    \begin{split} 
         J(B, \sigma) &= \pm 2 H(B, \sigma) \\
         J(B, \sigma) &= \mp \frac{2}{3\phi}\left(\frac{dJ}{d\tau}\right)_{\pm B} \\
         \left(\frac{dJ}{d\tau}\right)_{\pm B} &= \mp \frac{3}{2}\phi J(B, \sigma)
     \end{split}
 \end{equation}
 
+\noindent From this point, Harrington employs an eigenfunction expansion, for which the algebra is plainly written in the paper and will not be repeated here. However, it is important to consider the context of key steps and the shortcomings of the approximations that are introduced. The spatial dependence of the problem is expanded into a set of eigenfunctions of the form $\theta_n = A\ \cos(\lambda_n \tau)$, yet $\lambda_n$ is explicitly defined as
+
+\begin{equation}
+    \lambda_n \tan(\lambda_n B) = \frac{3}{2}\phi
+\end{equation}
+
+\noindent As will be discussed in the following section, this definition of the eigenvalues introduces several problems. See Section \ref{concerns} for a detailed discussion. After making the set of eigenfunctions $\theta_n$ orthonormal, Harrington writes the mean intensity as 
+
+\begin{equation}
+    J(\tau, \sigma) = \sum_{k=1}^{\infty} B^{-1/2} \cos(\lambda_k\tau)j_k(\sigma)
+\end{equation}
+
+\noindent where $B^{1/2}$ is the factor that normalizes the set $\theta_n$, and $j_k$ represents the frequency dependence of the mean intensity. The leading order eigenvalues $\lambda_nB = \pi(n-1/2)$ will, in fact, cause the spectrum at the surface of the slab to vanish, which is unphysical. Regardless of this fact, the eigenfunction expansion for $J(\tau, \sigma)$ is plugged into the Poisson equation and integrated over the optical depth to  obtain
+\begin{equation}
+    \frac{d^2j_n}{d\sigma} - \lambda_n^2 j_n = \sqrt{6}\left[\epsilon j_n - B^{-1/2} \frac{Q_n}{4\pi}\right]\delta(\sigma) 
+\end{equation}
+
+\noindent where $Q_n$ is simply the source function $G(\tau)$ multiplied by $\cos(\lambda_n \tau)$ and integrated over the optical depth for all space ($-B$ to $B$). A general solution for exponential decay is assigned to $j_n(\sigma)$ and normalized using the discontinuity at $\sigma=0$. This leads to the solution of the transfer equation for the mean intensity.
+
+\begin{equation}
+    J(\tau, \sigma) = \frac{\sqrt{6}}{8\pi} \sum_{n=1}{\infty} \frac{Q_n \cos(z_n B^{-1}\tau)\exp(-z_n B^{-1}|\sigma|)}{z_n + \sqrt{6}\epsilon B / 2}
+\end{equation}
+
+At this point, the author applies the results of this derivation to several physical scenarios. The first neglects photon destruction due to collisional de-excitation, and evaluates the expression for the mean intensity for which the source of photons is located at the central plane of the slab. In this case, the thermal source function $Q_n$ is equal to $1$. The mean intensity is evaluated at $\tau=0$ to obtain the spectrum at the center of the slab. Further, this expression is summed to obtain the integrated intensity at the center, which is reported to be proportional to $(aB)^{1/3}$. The mean number of scatterings for escape is calculated by taking the number of photons scattered per unit time over the whole medium divided by the generation rate. 
+
+This analysis is repeated for cases where the source is distributed uniformly in the slab ($Q_n \approx (-1)^{n-1}/z_n$) and where the photons themselves have a finite destruction probability. Similarly to the previous section, the integrated intensities and mean number of scatterings are calculated for each case and reported as numerical factors times $B$. For finite destruction probabilities, Harrington considers an optical depth so large that most photons are destroyed rather than escaping. The integrated intensity is again calculated, and the limit as $B\rightarrow\infty$ is taken to find the total amount of radiation that escapes the medium. It is shown that, with zero photon destruction and zero optical depth, the emergent flux from both boundaries is unity in agreement with the unit source.
+
+In the following section, Harrington remarks that the primary results of this work, being that the peak of the spectrum of escaping photons occurs at $~(aB)^{1/3}$ Doppler widths and that the mean number of scatterings for escape is proportional to $B$, match closely with numerical results shown by \cite{1972ApJ...174..439A}. Indeed, the analytic and numerical results are plotted on spectra for both the center and surface of a slab with optical thickness $2B$, and the curve fits the data points quite well except close to line center. The source used in the numerical model extends from $\tau=0$ to $10^6$, which explains why it matches much more closely to the analytic spectrum for which photons are emitted at the center of the slab. This is because the optical half-thickness $B$ is set to be $5\times10^{10}$ for the analytic solution, so the numerical model's source from $\tau=0$ to $10^6$ is sufficiently well-approximated analytically by central source emission at $\tau=0$.
+
+\subsection{Discussion and Concerns} \label{concerns}
+%% Are there any red flags?
+
+The accuracy of the solution put forth in this paper is limited by the treatment of the boundary conditions. To summarize: in the eigenfunction expansion, the spatial and frequency components of the differential equation are separated, yet the spatial eigenvalues are defined as being explicitly frequency-dependent. The resulting solution for large optical depths would suggest the mean intensity at the boundary of the slab is zero. This treatment is plainly incorrect, and its effects on the calculated spectrum have not been quantified. It is for this reason that we compare Harrington's solution to numerical results, as discussed in Section \ref{researchoverview}. 
+
+Notably, for $\lambda_n B = \pi(n-1/2)$, the left-hand side of Eq. \ref{harringtonbc} tends toward infinity while the right-hand side is not necessarily infinite. Since the line profile $\phi$ is frequency dependent, the separation of variables that Harrington utilizes has not truly separated anything. The separation constant $\lambda_n$ is not independent of the coordinates, and therefore it has a nonzero derivative with respect to frequency. These nonzero frequency derivatives are neglected in the following steps of the solution to the Poisson equation, yet they are \textit{included} when solving for the mean intensity at the surface.
+
+For example, in Harrington's Equation 34, a $\cos(z_n)$ term that would otherwise evaluate to 0 at leading order is rewritten as a $\sin(z_n)$ term using the relation in Eq. \ref{harringtonbc}, which contains the line profile. While this treatment does satisfy the boundary condition in Eq. \ref{harringtonbc}, it no longer satisfies the Poisson equation since the eigenvalue is now frequency dependent. Put simply: if the frequency dependence in the eigenvalue is included, the mean intensity at the surface is nonzero and the boundary condition is met but the Poisson equation is not satisfied. On the other hand, if the frequency dependence of the eigenvalue is neglected, the Poisson equation is satisfied but the mean intensity at the surface is zero and the boundary condition is not satisfied.
+
 \subsection{Citeable Results}
 %%% A list of citeable results in the paper
 \begin{itemize}
-    \item
+    \item The mean number of scatterings is proportional to the optical thickness of the medium. For a central source, the mean number of scatterings is $~0.91B$, and $~0.66B$ for a uniform source.
+    \item The greatest intensity which can be maintained in a medium with a finite destruction probability is $0.1979(a/\epsilon)^{1/3}$. 
+    \item The total amount of radiation that escapes the medium can be expressed in a series:
+    \begin{equation}
+        f_e = \frac{1}{\pi}\left(\frac{1}{r} + \frac{1}{2r(r+1)} + ... + \frac{n!}{2^n r(r+1)...(r+n)}+...\right)
+    \end{equation}
+    where $r=1/2 + \sqrt{6}\epsilon B/2\pi$.
+    \item Photons which originate in the line core are scattered very frequently there, but only diffuse spatially once their frequencies shift into the line wings. This is one reason why the mean number of scattering scales as the optical thickness, and not optical thickness squared.
 \end{itemize}
-
-\subsection{Discussion and Concerns}
-%% Are there any red flags?
-
-The accuracy of the solution put forth in this paper is limited by the treatment of the boundary conditions. In the eigenfunction expansion, the spatial and frequency components of the differential equation are separated, yet the spatial eigenvalues are defined as being explicitly frequency-dependent. The resulting solution for large optical depths would suggest the mean intensity at the boundary of the slab is zero, if not for the ansatz introduced to produce a finite, non-zero result. This treatment is plainly incorrect, and its effects on the calculated spectrum have not been quantified. It is for this reason that we compare Harrington's solution to numerical results, as discussed in Section \ref{researchoverview}. 
 
 \subsection{Personal Relevance}
 %%% Place the work into a familiar context. How is the discussion in the paper related to your own research interests and experience?
+
+
 
 \subsection{Summary}
 %%% Reread the abstract, and offer summarizing commentary.
@@ -245,9 +283,24 @@ To find how the time-independent terms scale, I equate the second and third term
     \end{split}
 \end{equation}
 
-Thus, the theory predicts that the characteristic frequency in Doppler widths should scale as the cube root of the Voigt parameter $a$ multiplied by the line center optical depth $\tau_0$. I have tested our eigenmode solution against this scaling by computing an escape time distribution for $\tau_0 = 10^5, 10^6, 10^7$, and $10^8$. I use two different values as a ``characteristic frequency'' $x_0$. One is the inverse of the lowest-order imaginary eigenfrequency, which determines the late-time exponential falloff of the escape time distribution. The other is the value of $x$ at the peak of the escape time distribution. In Fig. \ref{tau_scaling}, the values of the characteristic frequency for each of these methods are plotted against the optical depth in the simulation. Overplotted is the line $x = \sqrt{27/2}\ (a\tau)^{1/3}$ for reference.
+Thus, the theory predicts that the characteristic photon frequency in Doppler widths should scale as the cube root of the Voigt parameter $a$ multiplied by the line center optical depth $\tau_0$. This indicates the location of the spectral peaks on either side of line center --- the locations where the photons most readily escape. 
 
-It can be seen that at lower optical depths, the power law is somewhat steeper with an index of ~$1/2$. However, at larger optical depths, the escape time distribution characteristic frequency converges to a power law scaling of $(a\tau)^{1/3}$. Thus, in optically thick media, the eigenmode expansion solution method appears to be consistent with the expected analytic power law. In future work, I will increase the number of spatial and frequency eigenmodes used to obtain the escape time distributions from which the characteristic frequencies were extracted. This will confirm whether or not our solution method has converged, and will establish a comparative connection between that convergence and the power law trend. Additionally, I will test the other scalings that can be obtained by equating the temporal term in Eq. \ref{timedependent} to each of the other terms.
+Yet another scaling emerges from equating the time dependence and frequency dependence to see how the photons diffuse in frequency over time.
+
+\begin{equation}
+    3\frac{k\phi}{c}\frac{J}{t_0} = \frac{J}{R^2}
+\end{equation}
+
+\noindent With some manipulation, we can plug in the characteristic photon frequency scale for $x_0$ and relate it to the light crossing timescale.
+
+\begin{equation}
+    \begin{split}
+    \frac{ct_0}{R} &= -3kR\phi \\
+    &= 3\frac{kR}{\Delta}\frac{a}{x_0^2}\\
+    &= 3\tau \frac{a}{\left(\sqrt{\frac{27}{2}}\left(a\tau_0\right)^{1/3}\right)^2}\\
+    &= \frac{2}{9}\left(a\tau\right)^{1/3}
+    \end{split}
+\end{equation}
 
 \begin{figure}
     \centering
@@ -256,14 +309,9 @@ It can be seen that at lower optical depths, the power law is somewhat steeper w
     \label{tau_scaling}
 \end{figure}
 
-\begin{equation}
-    -3\frac{k\phi}{c}\frac{J}{t_0} = \frac{J}{R^2}
-\end{equation}
+I have tested our eigenmode solution against this scaling by computing an escape time distribution for $\tau_0 = 10^5, 10^6, 10^7$, and $10^8$. I use two different values as a ``characteristic frequency'' $x_0$. One is the inverse of the lowest-order imaginary eigenfrequency, which determines the late-time exponential falloff of the escape time distribution. The other is the value of $x$ at the peak of the escape time distribution. In Fig. \ref{tau_scaling}, the values of the characteristic frequency for each of these methods are plotted against the optical depth in the simulation. Overplotted is the line $x = (a\tau)^{1/3}$ for reference.
 
-\begin{equation}
-    t_0 = \frac{-3R^2k\phi}{c}
-\end{equation}
-
+It can be seen that at lower optical depths, the power law is somewhat steeper with an index of ~$1/2$. However, at larger optical depths, the escape time distribution characteristic frequency converges to a power law scaling of $(a\tau)^{1/3}$. Thus, in optically thick media, the eigenmode expansion solution method appears to be consistent with the expected analytic power law. In future work, I will increase the number of spatial and frequency eigenmodes used to obtain the escape time distributions from which the characteristic frequencies were extracted. This will confirm whether or not our solution method has converged, and will establish a comparative connection between that convergence and the power law trend. Additionally, I will test the other scaling that can be obtained by equating the temporal term in Eq. \ref{timedependent} to the spatial term.
 
 \subsubsection{Closed-Form Solutions for Ly$\alpha$ Resonant Scattering}
 
@@ -451,7 +499,7 @@ Substituting in Eq. \ref{sigma} for $\sigma$, Eq. \ref{lineprofile} for $\phi$, 
     H(x) = \frac{1}{4\pi R^2}\frac{\sqrt{\pi}}{2\sqrt{24}a\tau_0} \left(\frac{x^2}{1 + \cosh{\left(\sqrt{2\pi^3/27}|x^3|/a\tau_0\right)}}\right)
 \end{equation}
 
-The two equations, Eq. \ref{final} and Eq. \ref{c17/4piR^2}, are related by the expression $J(x) = 2 H(x)$, suggesting that the two-stream boundary condition (Eq. \ref{bc}) is not satisfied. Instead of offsetting the angular delta functions by $1/\sqrt{3}$ to make the radiation pressure equal to one-third of the photon energy density, it is possible that Dijkstra used an offset of $1/2$. However, this yields an entirely different boundary condition, $J = 2H$, and does not properly normalize the radiation pressure.
+The two equations, Eq. \ref{final} and Eq. \ref{c17/4piR^2}, are related by the expression $J(x) = 2 H(x)$, suggesting that the two-stream boundary condition (Eq. \ref{bc}) is not satisfied. Instead of offsetting the angular delta functions by $1/\sqrt{3}$ to make the radiation pressure equal to one-third of the photon energy density, it is possible that Dijkstra used an offset of $1/2$. However, this yields an entirely different boundary condition, $J = 2H$, and does not properly normalize the radiation pressure. The same boundary condition is used by \cite{harrington1973}.
 
 \subsubsection{Analytic Solutions Compared with Monte Carlo}
 
